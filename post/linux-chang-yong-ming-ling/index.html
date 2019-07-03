@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>Hello Gridea | Zerozys</title>
+<title>Linux常用命令 | Zerozys</title>
 <meta name="description" content="或许是不知梦的缘故，流离之人追逐幻影。">
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -96,45 +96,54 @@
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">Hello Gridea</h2>
-            <div class="post-date">2018-12-12</div>
-            
-              <div class="feature-container" style="background-image: url('https://zerozys.github.io/post-images/hello-gridea.png')">
-              </div>
+            <h2 class="post-title">Linux常用命令</h2>
+            <div class="post-date">2019-07-03</div>
             
             <div class="post-content">
-              <p>👏  欢迎使用 <strong>Gridea</strong> ！<br>
-✍️  <strong>Gridea</strong> 一个静态博客写作客户端。你可以用它来记录你的生活、心情、知识、笔记、创意... ...</p>
-<!-- more -->
-<p><a href="https://github.com/getgridea/gridea">Github</a><br>
-<a href="http://hvenotes.fehey.com/">Gridea 主页</a><br>
-<a href="http://fehey.com/">示例网站</a></p>
-<h2 id="特性">特性👇</h2>
-<p>📝  你可以使用最酷的 <strong>Markdown</strong> 语法，进行快速创作</p>
-<p>🌉  你可以给文章配上精美的封面图和在文章任意位置插入图片</p>
-<p>🏷️  你可以对文章进行标签分组</p>
-<p>📋  你可以自定义菜单，甚至可以创建外部链接菜单</p>
-<p>💻  你可以在 <strong>𝖶𝗂𝗇𝖽𝗈𝗐𝗌</strong> 或 <strong>𝖬𝖺𝖼𝖮𝖲</strong> 设备上使用此客户端</p>
-<p>🌎  你可以使用 <strong>𝖦𝗂𝗍𝗁𝗎𝖻 𝖯𝖺𝗀𝖾𝗌</strong> 或 <strong>Coding Pages</strong> 向世界展示，未来将支持更多平台</p>
-<p>💬  你可以进行简单的配置，接入 <a href="https://github.com/gitalk/gitalk">Gitalk</a> 或 <a href="https://github.com/SukkaW/DisqusJS">DisqusJS</a> 评论系统</p>
-<p>🇬🇧  你可以使用<strong>中文简体</strong>或<strong>英语</strong></p>
-<p>🌁  你可以任意使用应用内默认主题或任意第三方主题，强大的主题自定义能力</p>
-<p>🖥  你可以自定义源文件夹，利用 OneDrive、百度网盘、iCloud、Dropbox 等进行多设备同步</p>
-<p>🌱 当然 <strong>Gridea</strong> 还很年轻，有很多不足，但请相信，它会不停向前🏃</p>
-<p>未来，它一定会成为你离不开的伙伴</p>
-<p>尽情发挥你的才华吧！</p>
-<p>😘 Enjoy~</p>
+              <h3 id="tar命令">tar命令</h3>
+<p>tar命令可以把一大堆文件和目录打包成一个文件</p>
+<h4 id="打包和压缩">打包和压缩</h4>
+<p>打包是指将一大堆文件或目录变成一个总的文件；压缩则是将一个大的文件通过压缩算法变成一个小文件。</p>
+<h4 id="打包命令格式">打包命令格式</h4>
+<pre><code>[root@localhost ~]# tar [选项] [-f 压缩包名] 源文件或目录
+</code></pre>
+<p>选项：</p>
+<ul>
+<li>-c：打包；</li>
+<li>-f：指定文件名，注意要正确指定扩展名；</li>
+<li>-v：显式打包文件的过程</li>
+</ul>
+<h4 id="解打包命令格式">解打包命令格式</h4>
+<pre><code>[root@localhost ~]# tar [选项] 压缩包
+</code></pre>
+<p>选项：</p>
+<ul>
+<li>-x：解打包</li>
+<li>-f：指定文件名</li>
+<li>-v：显示过程</li>
+<li>-t：列出文件内容</li>
+<li>-C：目录，指定解打包的位置</li>
+</ul>
+<h4 id="targz-和-tarbz2-格式">.tar.gz 和 .tar.bz2 格式</h4>
+<pre><code>[root@localhost ~]# tar [选项] 压缩包 源文件或目录
+</code></pre>
+<p>选项：</p>
+<ul>
+<li>-z：压缩和解压缩成&quot;.tar.gz&quot;格式</li>
+<li>-j：压缩和解压缩成&quot;.tar.bz2&quot;格式</li>
+</ul>
 
             </div>
             
-              <div class="tag-container">
-                
-                  <a href="https://zerozys.github.io/tag/gridea" class="tag">
-                    Gridea
-                  </a>
-                
-              </div>
             
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://zerozys.github.io/post/ji-yi-ci-mysql-bei-hei-de-jing-li">
+                  <h3 class="post-title">
+                    记一次MySQL被黑的经历
+                  </h3>
+                </a>
+              </div>
             
 
             

@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://zerozys.github.io</id>
     <title>Zerozys</title>
-    <updated>2019-07-03T08:04:28.907Z</updated>
+    <updated>2019-07-03T09:57:40.440Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://zerozys.github.io"/>
     <link rel="self" href="https://zerozys.github.io/atom.xml"/>
@@ -10,6 +10,46 @@
     <logo>https://zerozys.github.io/images/avatar.png</logo>
     <icon>https://zerozys.github.io/favicon.ico</icon>
     <rights>All rights reserved 2019, Zerozys</rights>
+    <entry>
+        <title type="html"><![CDATA[Linux常用命令]]></title>
+        <id>https://zerozys.github.io/post/linux-chang-yong-ming-ling</id>
+        <link href="https://zerozys.github.io/post/linux-chang-yong-ming-ling">
+        </link>
+        <updated>2019-07-03T08:09:28.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="tar命令">tar命令</h3>
+<p>tar命令可以把一大堆文件和目录打包成一个文件</p>
+<h4 id="打包和压缩">打包和压缩</h4>
+<p>打包是指将一大堆文件或目录变成一个总的文件；压缩则是将一个大的文件通过压缩算法变成一个小文件。</p>
+<h4 id="打包命令格式">打包命令格式</h4>
+<pre><code>[root@localhost ~]# tar [选项] [-f 压缩包名] 源文件或目录
+</code></pre>
+<p>选项：</p>
+<ul>
+<li>-c：打包；</li>
+<li>-f：指定文件名，注意要正确指定扩展名；</li>
+<li>-v：显式打包文件的过程</li>
+</ul>
+<h4 id="解打包命令格式">解打包命令格式</h4>
+<pre><code>[root@localhost ~]# tar [选项] 压缩包
+</code></pre>
+<p>选项：</p>
+<ul>
+<li>-x：解打包</li>
+<li>-f：指定文件名</li>
+<li>-v：显示过程</li>
+<li>-t：列出文件内容</li>
+<li>-C：目录，指定解打包的位置</li>
+</ul>
+<h4 id="targz-和-tarbz2-格式">.tar.gz 和 .tar.bz2 格式</h4>
+<pre><code>[root@localhost ~]# tar [选项] 压缩包 源文件或目录
+</code></pre>
+<p>选项：</p>
+<ul>
+<li>-z：压缩和解压缩成&quot;.tar.gz&quot;格式</li>
+<li>-j：压缩和解压缩成&quot;.tar.bz2&quot;格式</li>
+</ul>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[记一次MySQL被黑的经历]]></title>
         <id>https://zerozys.github.io/post/ji-yi-ci-mysql-bei-hei-de-jing-li</id>
