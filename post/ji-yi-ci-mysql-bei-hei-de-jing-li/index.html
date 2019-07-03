@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>记一次MySQL被黑的经历 | Zerozys</title>
+<meta name="description" content="或许是不知梦的缘故，流离之人追逐幻影。">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<link rel="shortcut icon" href="https://zerozys.github.io/favicon.ico?v=1562140948705">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://unpkg.com/papercss@1.6.1/dist/paper.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://zerozys.github.io/styles/main.css">
+
+
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+
+  </head>
+  <body>
+  
+    <nav class="navbar border fixed split-nav">
+  <div class="nav-brand">
+    <h3><a href="https://zerozys.github.io">Zerozys</a></h3>
+  </div>
+  <div class="collapsible">
+    <input id="collapsible1" type="checkbox" name="collapsible1">
+    <button>
+      <label for="collapsible1">
+        <div class="bar1"></div>
+        <div class="bar2"></div>
+        <div class="bar3"></div>
+      </label>
+    </button>
+    <div class="collapsible-body">
+      <ul class="inline">
+        
+          <li>
+            
+              <a href="/" class="menu">
+                首页
+              </a>
+            
+          </li>
+        
+          <li>
+            
+              <a href="/archives" class="menu">
+                归档
+              </a>
+            
+          </li>
+        
+          <li>
+            
+              <a href="/tags" class="menu">
+                标签
+              </a>
+            
+          </li>
+        
+          <li>
+            
+              <a href="/post/about" class="menu">
+                关于
+              </a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div id="top" class="row site">
+      <div class="sm-12 md-8 col">
+        <div class="paper">
+          <article class="article">
+            <h1>记一次MySQL被黑的经历</h1>
+            <p class="article-meta">
+              2019-07-03
+              
+                <a href="https://zerozys.github.io/tag/Ony373w5f" class="badge warning">
+                  mysql
+                </a>
+              
+            </p>
+            
+            <div class="post-content">
+              <p>前两天做项目时突然发现云服务器上MySQL里的项目数据库消失了，一开始没有放在心上，直到今天突然发现多了一个<code>PLEASE_READ_ME_VVV</code> 的数据库，里面只有一张 <code>WARNING</code> 表，有如下信息：</p>
+<pre><code>To recover your lost Database and avoid leaking it: Send us 0.03 Bitcoin (BTC) to our Bitcoin address 1sWNYrhmKd78xmYNcnqc79MSDVwT2mqD8 and contact us by Email with your Server IP or Domain name and a Proof of Payment. Your Database is downloaded and backed up on our servers. Backups that we have right now: books, jparestful, vhr. Any email without your server IP Address or ...
+</code></pre>
+<p>看样子，我是被比特币勒索了，除此之外，在叫做mysql的库中发现多了许多后缀为32的表，共同点是只有一个为blob类型的data字段。打开是一串二进制字符串。没办法，只能卸载并重装了，特地记录一下卸载重装并采取一些安全措施的经过。</p>
+<h3 id="centos68-彻底删除mysql">CentOS6.8 彻底删除MySQL</h3>
+<p>之前是 rpm 包安装的MySQL</p>
+<ol>
+<li>
+<p>查看系统中是否以rpm包安装的MySQL</p>
+<pre><code>[root@VM_0_13_centos /]# rpm -qa | grep -i mysql
+mysql-community-client-8.0.16-2.el6.x86_64
+mysql-community-server-8.0.16-2.el6.x86_64
+</code></pre>
+</li>
+<li>
+<p>卸载mysql</p>
+<pre><code class="language-latex">[root@VM_0_13_centos /]# rpm -e mysql-community-client-8.0.16-2.el6.x86_64
+[root@VM_0_13_centos /]# rpm -e mysql-community-server-8.0.16-2.el6.x86_64
+</code></pre>
+</li>
+<li>
+<p>删除MySQL服务</p>
+<pre><code># chkconfig --list | grep -i mysql
+# chkconfig --del mysql
+</code></pre>
+</li>
+<li>
+<p>删除分散的MySQL文件夹</p>
+<pre><code>whereis mysql 或者 find / -name mysql*
+将所有目录及文件 rm -rf 掉
+</code></pre>
+</li>
+</ol>
+<p>通过以上几步，MySQL应该完全卸载干净了</p>
+<h3 id="centos68-rpm-方式安装-mysql8">CentOS6.8 rpm 方式安装 MySQL8</h3>
+<ol>
+<li>
+<p>进入官网下载 <a href="https://dev.mysql.com/downloads/mysql/">https://dev.mysql.com/downloads/mysql/</a>
+<img src="https://zerozys.github.io/post-images/1562140790073.png" alt="">
+注意选择对应的操作系统和操作系统版本，我的是CentOS6.8，所以如上选择，下载后上传到服务器上，我选择新建/usr/local/mysql 并放在这个目录下</p>
+</li>
+<li>
+<p>进入该目录下，解压安装</p>
+<pre><code>cd /usr/local/mysql
+tar -xvf mysql-8.0.16-2.el6.x86_64.rpm-bundle.tar
+安装
+rpm -ivh mysql-community-server-8.0.16-2.el6.x86_64.rpm --force --nodeps
+rpm -ivh mysql-community-client-8.0.16-2.el6.x86_64.rpm --force --nodeps
+</code></pre>
+</li>
+<li>
+<p>启动MySQL服务</p>
+<pre><code>service mysqld start      // 启动
+service mysqld stop       // 关闭
+service mysqld restart    // 重启
+</code></pre>
+<p>可能之前我安装过MySQL的缘故，第一次启动报错了</p>
+<p><img src="https://zerozys.github.io/post-images/1562140819234.png" alt=""></p>
+<p>这里我们不慌，<strong>打印一下MySQL的日志</strong>找一下错误出在哪</p>
+<p><code>cat /var/log/mysqld.log</code></p>
+<p><img src="https://zerozys.github.io/post-images/1562140836731.png" alt=""></p>
+<p>提示我3306被占用是否有另外的MySQL服务在运行</p>
+<p>使用命令<code>netstat -apn | grep 3306</code> 查一下端口</p>
+<p><img src="https://zerozys.github.io/post-images/1562140860328.png" alt=""></p>
+<p><code>kill -9 24688</code> 再次启动MySQL服务，发现成功启动了</p>
+</li>
+<li>
+<p>将MySQL服务加到系统服务中，自动启动</p>
+<pre><code>chkconfig --add mysqld
+chkconfig mysqld on
+</code></pre>
+</li>
+<li>
+<p>因为MySQL会自动为root账户创建一个随机密码，我们需要在MySQL里面来修改，因此我们先设置为不用密码登录，再进去修改密码</p>
+<p><code>vi /etc/my.cnf</code> 在最后添加一句 <code>skip-grant-tables</code> 和 <code>default_authentication_plugin=mysql_native_password</code> (这个是修改认证方式，8.0之前版本是默认的，8.0之后需要手动修改)</p>
+<p><code>service mysqld restart</code> 重启一下</p>
+</li>
+<li>
+<p>输入<code>mysql</code> 进入，设置密码</p>
+<pre><code class="language-sql">set global validate_password.policy = 0;
+flush privileges;
+ALTER USER 'root'@'localhost' IDENTIFIED BY '你的密码';
+</code></pre>
+</li>
+<li>
+<p>修改完成后把/etc/my.cnf中添加的skip-grant-tables删掉，然后再重新启动mysql服务就OK了。</p>
+<p><code>mysql -uroot -p</code> 再输入密码即可</p>
+</li>
+<li>
+<p>开启MySQL远程连接</p>
+<pre><code class="language-sql">update user set host='%' where user='root';
+flush privileges;
+</code></pre>
+</li>
+<li>
+<p>开放linux的对外访问的端口3306，保存</p>
+<pre><code>[root@VM_0_13_centos local]# iptables -A INPUT -p tcp --dport 3306 -j ACCEPT
+[root@VM_0_13_centos local]# iptables -A OUTPUT -p tcp --dport 3306 -j ACCEPT
+[root@VM_0_13_centos local]# service iptables save
+</code></pre>
+</li>
+<li>
+<p>navicat 成功连接</p>
+</li>
+</ol>
+
+            </div>
+          </article>
+        </div>
+        <div class="paper" data-aos="fade-in">
+          
+            <div class="next-post">
+              <div class="next">
+                下一篇
+              </div>
+              <a href="https://zerozys.github.io/post/java">
+                <h3 class="post-title">
+                  java
+                </h3>
+              </a>
+            </div>
+          
+        </div>
+        
+      </div>
+
+      <div class="sm-12 md-4 col sidebar">
+  <div class="paper info-container">
+    <img src="https://zerozys.github.io/images/avatar.png?v=1562140948705" class="no-responsive avatar">
+    <div class="text-muted">或许是不知梦的缘故，流离之人追逐幻影。</div>
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+  </div>
+  <div class="paper">
+    <div class="sidebar-title">
+      最新文章
+    </div>
+    <div class="row">
+      <ul>
+        
+          
+            <li>
+              <a href="https://zerozys.github.io/post/ji-yi-ci-mysql-bei-hei-de-jing-li">记一次MySQL被黑的经历</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://zerozys.github.io/post/java">java</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://zerozys.github.io/post/hello-gridea">Hello Gridea</a>
+            </li>
+          
+        
+      </ul>
+    </div>
+  </div>
+  <div class="paper">
+    <div class="sidebar-title">
+      标签列表
+    </div>
+    <div class="row">
+      
+        <a href="https://zerozys.github.io/tag/Ony373w5f" class="badge ">
+          mysql
+        </a>
+      
+        <a href="https://zerozys.github.io/tag/java" class="badge secondary">
+          java
+        </a>
+      
+        <a href="https://zerozys.github.io/tag/gridea" class="badge ">
+          Gridea
+        </a>
+      
+    </div>
+  </div>
+  <div class="paper">
+    Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://zerozys.github.io/atom.xml" target="_blank">RSS</a>
+  </div>
+</div>
+
+
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script type="application/javascript">
+
+AOS.init();
+
+hljs.initHighlightingOnLoad()
+
+</script>
+
+
+
+
+  </body>
+</html>
